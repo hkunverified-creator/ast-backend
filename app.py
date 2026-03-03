@@ -92,6 +92,39 @@ def create_task():
     task_id_counter += 1
     tasks.append(new_task)
     return jsonify(new_task), 201
+
+# ---------- PHYSICAL ACTIVITY ----------
+@app.route("/physical", methods=["GET"])
+def get_physical():
+    return jsonify(physical_entries)
+
+
+@app.route("/physical", methods=["POST"])
+def create_physical():
+    global physical_id_counter, physical_entries
+
+    data = request.get_json() or {}
+
+    required_fields = ["date", "name", "category", "description", "deadline", "status"]
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({"error": f"{field} is required"}), 400
+
+    new_entry = {
+        "id": physical_id_counter,
+        "date": data.get("date"),
+        "name": data.get("name"),
+        "category": data.get("category"),
+        "description": data.get("description"),
+        "deadline": data.get("deadline"),
+        "status": data.get("status"),
+        "reason": data.get("reason"),
+        "proofBase64": data.get("proofBase64"),
+    }
+    physical_id_counter += 1
+    physical_entries.append(new_entry)
+    return jsonify(new_entry), 201
+
 import os
 
 if __name__ == "__main__":
