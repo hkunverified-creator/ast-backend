@@ -8,10 +8,12 @@ CORS(app)  # allow your frontend to call this backend from the browser
 subjects = []
 tasks = []
 physical_entries = []
+reading_entries = []
 
 subject_id_counter = 1
 task_id_counter = 1
 physical_id_counter = 1
+reading_id_counter = 1   
 
 
 @app.route("/")
@@ -125,9 +127,41 @@ def create_physical():
     physical_entries.append(new_entry)
     return jsonify(new_entry), 201
 
-import os
+
+# ---------- READING ----------
+@app.route("/reading", methods=["GET"])
+def list_reading():
+    return jsonify(reading_entries)
+
+
+@app.route("/reading", methods=["POST"])
+def create_reading():
+    global reading_id_counter, reading_entries
+
+    data = request.get_json() or {}
+
+    required_fields = ["date", "title", "pages", "notes", "status"]
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({"error": f"{field} is required"}), 400
+
+    new_entry = {
+        "id": reading_id_counter,
+        "date": data.get("date"),
+        "title": data.get("title"),
+        "pages": data.get("pages"),
+        "notes": data.get("notes"),
+        "status": data.get("status"),
+        "reason": data.get("reason"),
+        "proofBase64": data.get("proofBase64"),
+    }
+    reading_id_counter += 1
+    reading_entries.append(new_entry)
+    return jsonify(new_entry), 201
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
