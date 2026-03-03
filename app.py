@@ -7,8 +7,11 @@ CORS(app)  # allow your frontend to call this backend from the browser
 # --- In‑memory "database" (resets when server restarts) ---
 subjects = []
 tasks = []
+physical_entries = []
+
 subject_id_counter = 1
 task_id_counter = 1
+physical_id_counter = 1
 
 
 @app.route("/")
