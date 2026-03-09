@@ -5,6 +5,13 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+# --- PASTE THE CODE BELOW THIS LINE ---
+portal_stats = {
+    "streak": 0,
+    "last_active": None
+}
+# --- PASTE THE CODE ABOVE THIS LINE ---
+
 subjects = []
 tasks = []
 physical_entries = []
