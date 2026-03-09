@@ -145,5 +145,6 @@ def purge_system():
     return jsonify({"status": "success", "message": "All data cleared"}), 200
 
 if __name__ == "__main__":
-    # Standard local port
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # This allows Render to pick the correct port automatically
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
