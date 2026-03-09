@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -159,6 +160,13 @@ def create_reading():
     reading_entries.append(new_entry)
     return jsonify(new_entry), 201
 
+@app.route("/api/system/purge", methods=["POST"])
+def purge_system():
+    global subjects, tasks, physical_entries, reading_entries
+    global subject_id_counter, task_id_counter, physical_id_counter, reading_id_counter
+    subjects = []; tasks = []; physical_entries = []; reading_entries = []
+    subject_id_counter = 1; task_id_counter = 1; physical_id_counter = 1; reading_id_counter = 1
+    return jsonify({"status": "success", "message": "All data cleared"}), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
